@@ -10,22 +10,15 @@ rpcString = process.env.RPC_INTERNAL
 const bot = new Bot()
 
 app.get('/', async (_, res) => {
-    try {
-        fs.readFile('./data.json', (err, data) => {
-            if (err) {
-                res.json({
-                    err: 'fail to fetch data: ' + err.message
-                })
-            }
-            const result = JSON.parse(data)
-            res.json(result)
-        });
-    }
-    catch (e) {
-        res.json({
-            err: 'fail to fetch data: ' + err.message
-        })
-    }
+    fs.readFile('./data.json', (err, data) => {
+        if (err) {
+            res.json({
+                err: 'fail to fetch data: ' + err.message
+            })
+        }
+        const result = JSON.parse(data)
+        res.json(result)
+    });
 })
 
 app.listen(port, async () => {
