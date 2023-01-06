@@ -7,20 +7,21 @@ module.exports.store = (newData) => {
             console.log(err.message)
         }
         let obj = JSON.parse(data)
-        const formatData = formatReward(newData)
-        obj.recent_save = new Date(Date.now()).toString()
-        obj.data.unshift({
-            date: new Date(Date.now()).toString(),
-            rewards: formatData
-        })
-        obj.report = ""
+        const formatData = await formatReward(newData)
         setTimeout(() => {
+            console.log('saving ...')
+            obj.recent_save = new Date(Date.now()).toString()
+            obj.data.unshift({
+                date: new Date(Date.now()).toString(),
+                rewards: formatData
+            })
+            obj.report = ""
             fs.writeFile('./data.json', JSON.stringify(obj, null, 2), err => {
                 if (err) {
                     console.log(err.message)
                 }
             })
-        }, 5000)
+        }, 10000)
     });
 }
 

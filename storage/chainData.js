@@ -79,7 +79,7 @@ module.exports.chainData = {
         address: "cheqd1gyjqlfkrggd0uyd748fw9y5kq9xzmjqqgdenpy",
         hexAddr: "82F41AEAE0AC7A81B2A130F9B62CBEFF1C620905",
         prefixValCons: "cheqdvalcons",
-        ping: "cheqd",
+        ping: "cheqd-network",
         mintscan: "cheqd",
     },
     chihuahua: {
@@ -93,7 +93,7 @@ module.exports.chainData = {
         address: "chihuahua1h6vcu4r2hx70x5f0l3du3ey2g98u9ut2c2fwqs",
         hexAddr: "C13AC76E729A4408F13A935220B1D5A674AD55CD",
         prefixValCons: "chihuahuavalcons",
-        ping: "chihuahua",
+        ping: "chihuahua-token",
         mintscan: "chihuahua",
     },
     cyber: {
@@ -121,7 +121,7 @@ module.exports.chainData = {
         address: "emoney16dc379m0qj64g4pr4nkl7ewak52qy2srxeutcv",
         hexAddr: "0F582D2C490BE99DF9D11AF4335567861700C0B8",
         prefixValCons: "emoneyvalcons",
-        ping: "e-money",
+        ping: "e-money-eur",
         mintscan: "emoney",
     },
     evmos: {
@@ -149,7 +149,7 @@ module.exports.chainData = {
         address: "fetch1s9myentgxavnpw7648an2v6zvvpza0axc7jwup",
         hexAddr: "3F0677A345CBE77FBC9EF769371710B70AD73F86",
         prefixValCons: "fetchvalcons",
-        ping: "fetchhub",
+        ping: "fetch-ai",
         mintscan: "fetchai",
     },
     injective: {
@@ -163,7 +163,7 @@ module.exports.chainData = {
         address: "inj16eg6wf2k6v0lzwu2vsrhxhe0tcycgr7jvrjk9x",
         hexAddr: "CC8D91AE72CD6156C5064524B4BDADC97405DCC7",
         prefixValCons: "injvalcons",
-        ping: "injective",
+        ping: "injective-protocol",
         mintscan: "injective",
     },
     ixo: {
@@ -191,7 +191,7 @@ module.exports.chainData = {
         address: "juno1083svrca4t350mphfv9x45wq9asrs60c7a585a",
         hexAddr: "6EC804DBB72380D0AA5AC6A82650A1FA75FBABC5",
         prefixValCons: "junovalcons",
-        ping: "juno",
+        ping: "juno-network",
         mintscan: "juno",
     },
     kava: {
@@ -219,7 +219,7 @@ module.exports.chainData = {
         address: "ki1lmkzaxztjpesh0mf7qy76l5npqwc7fk3tdcfak",
         hexAddr: "D3A696E87669E124AE4A3614ACB83B8618F37829",
         prefixValCons: "kivalcons",
-        ping: "kichain",
+        ping: "ki",
         mintscan: "ki-chain",
     },
     konstellation: {
@@ -275,7 +275,7 @@ module.exports.chainData = {
         address: "omniflix15wshq6lmxmcn9vxky2mxf8zhstpn9ywmy2xhcu",
         hexAddr: "2E530AEF6EF9B4497560EE670AD2F4996486BF98",
         prefixValCons: "omniflixvalcons",
-        ping: "omniflix",
+        ping: "omniflix-network",
         mintscan: "omniflix",
     },
     passage: {
@@ -303,7 +303,7 @@ module.exports.chainData = {
         address: "pb10ap9fj9uq50cardmlzdj367kqg5x3ghjzkxumm",
         hexAddr: "66DC6ACB190AA67582334077A8E984B2845A1EE3",
         prefixValCons: "pbvalcons",
-        ping: "provenance",
+        ping: "provenance-blockchain",
         mintscan: "provenance",
     },
     regen: {
@@ -432,8 +432,57 @@ module.exports.chainData = {
     },
 };
 
+module.exports.denomToId = {
+    "akt": "akash-network",
+    "band": "band-protocol",
+    "btsg": "bitsong",
+    "bcna": "bitcanna",
+    "atom": "cosmos",
+    "cheq": "cheqd-network",
+    "huahua": "chihuahua-token",
+    "boot": "bostrom",
+    "ngm": "e-money-eur",
+    "evmos": "evmos",
+    "fet": "fetch-ai",
+    "inj": "injective-protocol",
+    "ixo": "ixo",
+    "juno": "juno-network",
+    "kava": "kava",
+    "xki": "ki",
+    "darc": "darc",
+    "like": "likecoin",
+    "osmo": "osmosis",
+    "flix": "omniflix-network",
+    "pasg": "pasg",
+    "hash": "provenance-blockchain",
+    "regen": "regen",
+    "rowan": "sifchain",
+    "stars": "stargaze",
+    "iov": "starname",
+    "scrt": "secret",
+    "strd": "stride",
+    "stuatom": "stride-staked-atom",
+    "dec": "decentr",
+    "dvpn": "sentinel",
+    "umee": "umee",
+    "vdl": "vidulum"
+} 
+
 module.exports.specialDenom = {
-    rowan: 18,
-    boot: 0,
-    inj: 18
+    rowan: {
+        denom: 'rowan',
+        exponent: 18
+    },
+    boot: {
+        denom: 'boot',
+        exponent: 0
+    },
+    inj: {
+        denom: 'inj',
+        exponent: 18
+    },
+    nanolike: {
+        denom: 'like',
+        exponent: 9
+    },
 };

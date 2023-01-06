@@ -1,4 +1,4 @@
-const { specialDenom, chainData } = require('../storage/chainData')
+const { specialDenom, chainData, denomToId } = require('../storage/chainData')
 const axios = require('axios')
 
 const SI_prefix = {
@@ -14,8 +14,12 @@ const SI_prefix = {
     "y": 24
 }
 
-module.exports.formatReward = (rewards) => {
+var queryString = 'https://api.coingecko.com/api/v3/simple/price?include_24hr_change=false&vs_currencies=usd&ids=agoric,akash-network,axelar,usd-coin,tether,dai,ethereum,matic-network,avalanche-2,polkadot,band-protocol,bzedge,bitcanna,bitsong,switcheo,cerberus-2,cheqd-network,chihuahua-token,comdex,cosmos,crescent-network,crypto-com-chain,decentr,desmos,dig-chain,echelon,emoney,e-money-eur,evmos,fetch-ai,injective-protocol,iris-network,ixo,jackal,juno-network,kava,ki,kujira,lambda,likecoin,lum-network,nym,odin-protocol,geodb,osmosis,ion,somm,persistence,point-network,provenance-blockchain,rebus,regen,rizon,secret,sentinel,certik,sifchain,stafi,stafi-ratom,stargaze,starname,stride,teritori,terra-luna,terrausd,terrakrw,white-whale,terra-luna-2,umee,unification,vidulum'
+
+module.exports.formatReward = async (rewards) => {
     let newRewards = {}
+    const res = await axios.get(queryString)
+    const usdRates = res.data 
     for (var key in rewards) {
         let newTotal = []
         if (rewards[key].err) {
@@ -33,11 +37,14 @@ module.exports.formatReward = (rewards) => {
             else {
                 newDenom = total.denom
             }
-            if (newDenom && newDenom !== 'unknow') {
-                let displayDenom = getDisplayDenom(newDenom)
+            const displayDenom = getDisplayDenom(newDenom)
+            if (newDenom && newDenom !== 'unknown' && displayDenom !== 'unknown' ) {
+                const value = (getValueFromDenom(newDenom, total.amount)).toFixed(2)
+                const id = denomToId[displayDenom]
                 newTotal.unshift({
                     denom: displayDenom,
-                    amount: (getValueFromDenom(newDenom, total.amount)).toFixed(2)
+                    amount: value,
+                    usd: usdRates[id] && (usdRates[id].usd * value).toFixed(2)
                 })
             }
         })
@@ -46,10 +53,6 @@ module.exports.formatReward = (rewards) => {
         }
     }
     return newRewards
-}
-
-const getAmount = (string, denom) => {
-    return (parseInt(string) / Math.pow(10, 24)).toFixed(2)
 }
 
 const getDenom = async (api, ibcDenom) => {
@@ -64,7 +67,10 @@ const getDenom = async (api, ibcDenom) => {
 }
 
 const getDisplayDenom = (denom) => {
-    if (denom in specialDenom || denom === 'unknown' || !denom) {
+    if (denom in specialDenom) {
+        return specialDenom[`${denom}`].denom
+    }
+    if (denom === 'unknown') {
         return denom
     }
     else {
@@ -72,7 +78,7 @@ const getDisplayDenom = (denom) => {
         const displayDenom = prefix === 'u'
             || prefix === 'n'
             || prefix === 'a'
-            ? denom.substring(1) : denom
+            ? denom.substring(1) : 'unknow'
         return displayDenom
     }
 }
@@ -80,7 +86,7 @@ const getDisplayDenom = (denom) => {
 const getValueFromDenom = (denom, value) => {
     let convertValue
     if (denom in specialDenom) {
-        const exponent = specialDenom[`${denom}`]
+        const exponent = specialDenom[`${denom}`].exponent
         convertValue = parseInt(value, 10) / Math.pow(10, 18 + exponent)
     }
     else {
@@ -104,4 +110,8 @@ const getValueFromDenom = (denom, value) => {
         }
     }
     return convertValue
+}
+
+const getUsdRate = (denom) => {
+
 }

@@ -10,7 +10,6 @@ class Bot {
         }
         if(this.checkNewDay(currentDate)) {
             let result = await getAsset() 
-            console.log("hello")
             store(result)
         }
     }
