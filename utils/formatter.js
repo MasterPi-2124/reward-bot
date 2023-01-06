@@ -14,12 +14,12 @@ const SI_prefix = {
     "y": 24
 }
 
-var queryString = 'https://api.coingecko.com/api/v3/simple/price?include_24hr_change=false&vs_currencies=usd&ids=agoric,akash-network,axelar,usd-coin,tether,dai,ethereum,matic-network,avalanche-2,polkadot,band-protocol,bzedge,bitcanna,bitsong,switcheo,cerberus-2,cheqd-network,chihuahua-token,comdex,cosmos,crescent-network,crypto-com-chain,decentr,desmos,dig-chain,echelon,emoney,e-money-eur,evmos,fetch-ai,injective-protocol,iris-network,ixo,jackal,juno-network,kava,ki,kujira,lambda,likecoin,lum-network,nym,odin-protocol,geodb,osmosis,ion,somm,persistence,point-network,provenance-blockchain,rebus,regen,rizon,secret,sentinel,certik,sifchain,stafi,stafi-ratom,stargaze,starname,stride,teritori,terra-luna,terrausd,terrakrw,white-whale,terra-luna-2,umee,unification,vidulum'
+var queryString = 'https://api.coingecko.com/api/v3/simple/price?include_24hr_change=false&vs_currencies=usd&ids=agoric,stride-staked-atom,akash-network,darc,omniflix-network,konstellation,axelar,usd-coin,tether,bostrom,dai,wei,matic-network,avalanche-2,polkadot,band-protocol,bzedge,bitcanna,bitsong,switcheo,cerberus-2,cheqd-network,chihuahua-token,comdex,cosmos,crescent-network,crypto-com-chain,decentr,desmos,dig-chain,echelon,emoney,e-money-eur,evmos,fetch-ai,injective-protocol,iris-network,ixo,jackal,juno-network,kava,ki,kujira,lambda,likecoin,lum-network,nym,odin-protocol,geodb,osmosis,ion,somm,persistence,point-network,provenance-blockchain,rebus,regen,rizon,secret,sentinel,certik,sifchain,stafi,stafi-ratom,stargaze,starname,stride,teritori,terra-luna,terrausd,terrakrw,white-whale,terra-luna-2,umee,unification,vidulum'
 
 module.exports.formatReward = async (rewards) => {
     let newRewards = {}
     const res = await axios.get(queryString)
-    const usdRates = res.data 
+    const usdRates = res.data
     for (var key in rewards) {
         let newTotal = []
         if (rewards[key].err) {
@@ -38,13 +38,14 @@ module.exports.formatReward = async (rewards) => {
                 newDenom = total.denom
             }
             const displayDenom = getDisplayDenom(newDenom)
-            if (newDenom && newDenom !== 'unknown' && displayDenom !== 'unknown' ) {
+            if (newDenom && newDenom !== 'unknown' && displayDenom !== 'unknown') {
                 const value = (getValueFromDenom(newDenom, total.amount)).toFixed(2)
                 const id = denomToId[displayDenom]
+                const rate = usdRates[id] ? ( usdRates[id].usd && usdRates[id].usd.value ) ? 0 : usdRates[id].usd : 0
                 newTotal.unshift({
                     denom: displayDenom,
                     amount: value,
-                    usd: usdRates[id] && (usdRates[id].usd * value).toFixed(2)
+                    usd: (rate * value).toFixed(2)
                 })
             }
         })
