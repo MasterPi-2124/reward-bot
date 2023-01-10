@@ -7,13 +7,14 @@ module.exports.store = (newData) => {
             console.log(err.message)
         }
         let obj = JSON.parse(data)
-        const formatData = await formatReward(newData)
+        const {newRewards, sum} = await formatReward(newData)
         setTimeout(() => {
             console.log('saving ...')
             obj.recent_save = new Date(Date.now()).toString()
             obj.data.unshift({
                 date: new Date(Date.now()).toString(),
-                rewards: formatData
+                rewards: newRewards,
+                total: sum.toFixed(2)
             })
             obj.report = ""
             fs.writeFile('./data.json', JSON.stringify(obj, null, 2), err => {

@@ -20,6 +20,7 @@ module.exports.formatReward = async (rewards) => {
     let newRewards = {}
     const res = await axios.get(queryString)
     const usdRates = res.data
+    let sum = 0
     for (var key in rewards) {
         let newTotal = []
         if (rewards[key].err) {
@@ -41,19 +42,23 @@ module.exports.formatReward = async (rewards) => {
             if (newDenom && newDenom !== 'unknown' && displayDenom !== 'unknown') {
                 const value = (getValueFromDenom(newDenom, total.amount)).toFixed(2)
                 const id = denomToId[displayDenom]
-                const rate = usdRates[id] ? ( usdRates[id].usd && usdRates[id].usd.value ) ? 0 : usdRates[id].usd : 0
+                const rate = usdRates[id] ? ( usdRates[id].usd && usdRates[id].usd.value ) ? 0 : usdRates[id].usd || 0  : 0
                 newTotal.unshift({
                     denom: displayDenom,
                     amount: value,
                     usd: (rate * value).toFixed(2)
                 })
+                sum += parseFloat(rate * value)
             }
         })
         newRewards[key] = {
             total: newTotal
         }
     }
-    return newRewards
+    return {
+        newRewards,
+        sum
+    }
 }
 
 const getDenom = async (api, ibcDenom) => {
@@ -111,8 +116,4 @@ const getValueFromDenom = (denom, value) => {
         }
     }
     return convertValue
-}
-
-const getUsdRate = (denom) => {
-
 }

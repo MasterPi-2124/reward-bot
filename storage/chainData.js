@@ -461,7 +461,7 @@ module.exports.denomToId = {
     "iov": "starname",
     "scrt": "secret",
     "strd": "stride",
-    "stuatom": "stride-staked-atom",
+    "statom": "stride-staked-atom",
     "dec": "decentr",
     "dvpn": "sentinel",
     "umee": "umee",
