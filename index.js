@@ -7,9 +7,13 @@ const port = 3000
 require('dotenv').config()
 rpcString = process.env.RPC_INTERNAL
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 const bot = new Bot()
 
-app.get('/', async (_, res) => {
+app.get('/', (_, res) => {
     fs.readFile('./data.json', (err, data) => {
         if (err) {
             res.json({
@@ -23,8 +27,12 @@ app.get('/', async (_, res) => {
 
 app.listen(port, async () => {
     console.log(`Example app listening on port ${port}`)
-    while (1) {
-        await bot.work()
-    }
 })
+
+sleep(5000).then(async () => {
+    while (1) {
+       await bot.work()
+    }
+});
+
 
